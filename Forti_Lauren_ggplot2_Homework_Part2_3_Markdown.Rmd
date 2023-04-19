@@ -1,0 +1,74 @@
+---
+title: 'ggplot2 Homework: Parts 2 & 3'
+author: "Lauren Forti"
+date: "March 20, 2023"
+output: html_document
+---
+
+
+# **Setup**
+## Import Libraries
+```{r message = FALSE, warning = FALSE}
+# import libraries
+library(tidyverse)
+library(socviz)
+```
+
+
+
+
+# **Part 2**
+## Adding Color to the Bar Chart of Religion
+```{r message = FALSE, warning = FALSE}
+# build bar chart of religion
+ggplot(data = gss_sm, aes(x = religion, y = ..prop.., group = 1)) + geom_bar(aes(fill = factor(..x..)), show.legend = FALSE)
+
+# save image
+ggsave("religions.png")
+```
+
+
+## Changing the Y-axis in Region to Proportion
+```{r message = FALSE, warning = FALSE}
+# build bar chart of religion by region
+ggplot(data = gss_sm, aes(x = bigregion)) + geom_bar(aes(y = ..prop.., group = religion, fill = religion), position = "dodge")
+
+# save image
+ggsave("religionbyregion.png")
+```
+
+
+
+
+# **Part 3**
+## Election Scatter Plot
+```{r message = FALSE, warning=FALSE}
+# plot election of 2016 results
+ggplot(data = election, aes(x = r_points, y = reorder(st, r_points))) +
+  
+  # add scatter plot
+  geom_point(aes(color = party), size = 2.5, show.legend = FALSE) +
+  
+  # break into region
+  facet_wrap(~census, scales = "free_y") +
+  
+  # change party colors
+  scale_color_manual(values = c("Democratic" = "#2E74C0", "Republican" = "#CB454A")) +
+  
+  # change x-axis scale and labels
+  scale_x_continuous(name = "Point Margin", limits = c(-30, 40), breaks = c(-30, -20, -10, 0, 10, 20, 30, 40), labels = c("30\n(Clinton)", 20, 10, 0, 10, 20, 30, "40\n(Trump)")) +
+  
+  # add vertical line at x = 0
+  geom_vline(xintercept = 0, size = .6) +
+  
+  # remove y axis title
+  ylab(" ") +  
+  
+  # add title
+  ggtitle(label = "US Presidental Election 2016, State-level results")
+
+# save image
+ggsave("election2016.png")
+```
+
+.
